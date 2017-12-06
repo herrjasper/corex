@@ -1,0 +1,65 @@
+ crx_alltokc       overall token count
+  crx_tokc          count of tokens within sentences
+  crx_ttrat         type-token ratio (using crx_tokc)
+  crx_wlen          average word length in characters (using crx_tokc)
+  crx_sentc         sentence count
+  crx_slen          average sentence length in words
+  crx_mod           number of modal verbs per 1,000 words
+  crx_vv            number of lexical verbs per 1,000 words
+  crx_vaux          number of auxiliaries per 1,000 words
+  crx_vfin          number of finite verbs per 1,000 words
+  crx_cn            number of common nouns per 1,000 words
+  crx_prep          number of prepositions per 1,000 words
+  crx_inf           number of infinitives per 1,000 words
+  crx_imp           number of imperatives per 1,000 words
+  crx_adv           number of adverbs per 1,000 words
+  crx_adj           number of adjectives per 1,000 words
+  crx_subjs         number of subjunctors per 1,000 words
+  crx_subji         number of infin.-embedding ptcls per 1,000 words
+  crx_conj          number of coordinating particles per 1,000 words
+  crx_wh            number of w(h) pronouns per 1,000 words 
+  crx_dem           number of demonstratives per 1,000 words
+  crx_poss          number of possessive pronouns per 1,000 words
+  crx_neg           number of negative particles per 1,000 words
+  crx_answ          number of answering particles per 1,000 words
+  crx_zuinf         number of 'zu' infinitives per 1,000 words
+  crx_parta         number of comparison particles per 1,000 words
+  crx_card          number of cardinals per 1,000 words
+  crx_itj           number of interjections per 1,000 words 
+  crx_nonwrd        number of non-words per 1,000 words 
+  crx_def           number of definite articles per 1,000 words 
+  crx_indef         number of indefinite articles per 1,000 words 
+  crx_neper         number of person names per 1,000 words 
+  crx_neloc         number of location names per 1,000 words 
+  crx_neorg         number of organization names per 1,000 words 
+  crx_emo           number of emoticons per 1,000 words 
+  crx_dq            number of double quotes per 1,000 words 
+  crx_clitindef     number of clitic indef. articles per 1,000 words 
+  crx_vpast         number of past verbs per 1,000 words 
+  crx_vpres         number of present verbs per 1,000 words 
+  crx_vpressubj     number of pres. subjunctive verbs per 1,000 words 
+  crx_wpastsubj     number of 'werden' subjunctives per 1,000 words 
+  crx_vvpastsubj    number of past subjunctive per 1,000 words 
+  crx_pper_1st      number of 1st person pronouns per 1,000 words 
+  crx_pper_2nd      number of 2nd person pronouns per 1,000 words 
+  crx_pper_3rd      number of 3rd person pronouns per 1,000 words 
+  crx_gen           number of genitives per 1,000 nouns
+  crx_simpx         number of <simpx /> constituents per sentence
+  crx_psimpx        number of <psimpx /> constituents per sentence
+  crx_rsimpx        number of <rsimpx /> constituent per sentence
+  crx_v2            number of verb-second sentences per sentence
+  crx_vlast         number of verb-last sentences per sentence
+  crx_vflen         average length of the pre-field ('Vorfeld', Vf)
+  crx_esvf          number of expletive 'es' in Vf per 1,000 Vf
+  crx_clausevf      numer of clausal Vf per 1,000 Vf
+  crx_cmpnd         number of compounds per 1,000 common nouns
+  crx_unkn          number of unknown lemmas per 1,000 words
+  crx_short         number of non-standard contracted verbs and
+                    prepositions ('gehts', 'aufm') per 1,000 words
+  crx_qsvoc         number of other short/contracted forms ('nich',
+                    'schomma') per 1,000 words
+  crx_cnloan        number of loan nouns with recognizable suffix
+                    ('-ik', '-um') per 1,000 NOUNS
+  crx_vvieren       number of '-ieren' verbs per 1,000 VERBS
+  crx_sapos         number of apostrophized 's per 1,000 words
+
