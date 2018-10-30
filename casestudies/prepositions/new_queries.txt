@@ -1,0 +1,54 @@
+# "case" nicht in der query spezifizieren, weil der Tagger/Marmot wahrscheinlich
+# von der voranehenden Präposition beeinflusst ist.
+
+
+
+Genitiv
+# word=".+s" ist nötig, weil man sonst (fälschlich als sg) getaggte Plurale mit reinbekommt
+# ("trotz schwierigen Windverhältnissen", "trotz deutlichen Anzeichen" etc.) 
+
+
+mit ADJ:
+
+[lc="trotz"] [tag="ADJA" & lc=".+en"] [tag="NN" & morph="masc|neut" & morph="sg" & word=".+s"] 
+
+mit DET:
+
+
+[lemma="trotz"] [lc="eines|irgendeines|dieses|jenes|des|dessen|meines|deines|seines|unseres|ihres|eures"]
+
+
+Dativ:
+
+mit ADJ:
+
+ [lc="trotz"] [tag="ADJA" & lc=".+em"] [tag="NN" & morph="masc|neut" & morph="sg"] 
+
+mit DET:
+
+ [lemma="trotz"] [lc="einem|irgendeinem|diesem|jenem|dem|meinem|deinem|seinem|unserem|ihrem|eurem"]
+
+18588
+
+-----------------
+lemmas (lemma_lc benutzen! Sonst kriegt man nicht (falsch lemmatisiertes) "Trotz" am Satzanfang...
+
+
+###
+
+anlaesslich +
+anlässlich +
+gemaess +
+gemaeß (nicht im Kograuk)
+gemäss +
+abzueglich (nicht in Kograuk)
+bezueglich +
+zuzueglich +
+gegenueber +
+einschliesslich +
+
+--------------------
+
+list:
+
+abzüglich|angesichts|anlässlich|außer|usweislich|betreffs|bezüglich|dank|einschließlich|entgegen|gegenüber|gemäß|hinsichtlich|mangels|mitsamt|mittels|nebst|samt|seitens|trotz|vorbehaltlich|während|wegen|zuzüglich
