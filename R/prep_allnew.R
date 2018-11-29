@@ -190,7 +190,10 @@ do_glms_open(prep.allnew.md.sample.scaled.docscores.prepselection, "case ~ next.
 
 # works well for "trotz" (with and adjective following, we get more dative; cf. Duden)
 m <- (glm(paste("case", " ~ ", paste(corex.predictors, collapse = " + ")), data=subset(prep.allnew.md.sample.scaled.docscores.prepselection, target.prep=="mangels"), family=binomial))
+m <- (glm(paste("case", " ~ ", paste(fa.predictors, collapse = " + ")), data=subset(prep.allnew.md.sample.scaled.docscores.prepselection, target.prep=="mangels"), family=binomial))
+#m <- glm(case~ slen + vlast + subjs + emo + neorg + indef + zuinf + neg + conj, data=subset(prep.allnew.md.sample.scaled.docscores.prepselection, target.prep=="mangels"), family=binomial)
 # zuzüglich does not work. why?
+
 xtabs(~case+corpus, data=subset(prep.allnew.md.sample.scaled.docscores.prepselection, target.prep=="zuzüglich"))
 
 table(head(fitted(m), 10000),head(subset(prep.allnew.md.sample.scaled.docscores.prepselection, target.prep=="wegen")$next.pos, 10000))
@@ -229,7 +232,7 @@ x.upper <- max(coeffs[!is.na(coeffs)]) * 1.05
 dotchart(rep(-100, length(rownames(coeffs))), xlim=c(x.lower, x.upper), lcolor = "gray", 
          cex.lab = .3,
          labels = rownames(coeffs),
-         cex = .5
+         cex = .8
 )
 lines(c(0,0), c(0,nrow(coeffs)+1), col="gray", lty=1)
 
@@ -242,17 +245,16 @@ plotcolors <- c(brewer.pal(7,"Set1"), "khaki", "olivedrab1", "purple3")
 pchsymbols <- c(0:4,6:8,11,12)
 
 for (i in 1:nrow(coeffs)) {
-  cat("---------", rownames(coeffs)[i], "--------------\n")
+#  cat("---------", rownames(coeffs)[i], "--------------\n")
   for (j in 1:ncol(coeffs)){
-    cat(colnames(coeffs)[j],"\t")
+    #cat(colnames(coeffs)[j],"\t")
     color <- plotcolors[j]
-    cat(color, "\n")
-#  points(coeffs[i,j], i, col = color, pch = lpch, cex = lcex)
-   points(coeffs[i,j], i, col = "black", pch = pchsymbols[j], cex = lcex)
+    #cat(color, "\n")
+  points(coeffs[i,j], i, col = color, pch = lpch, cex = lcex)
+#   points(coeffs[i,j], i, col = "black", pch = pchsymbols[j], cex = lcex)
   }
 }
+legend(-4.6, 60.5, legend=colnames(coeffs), cex = .7, fill=plotcolors, ncol=2)
+#legend(-4.6, 60.5, legend=colnames(coeffs), cex = .8, pch=pchsymbols, ncol=2)
 
-#legend(-4.6, 60.5, legend=colnames(coeffs), cex = .55, fill=plotcolors)
-legend(-4.6, 60.5, legend=colnames(coeffs), cex = .7, pch=pchsymbols, ncol=2)
-
-
+######################################

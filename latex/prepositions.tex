@@ -1,0 +1,83 @@
+
+\subsection{Dative vs genitive case governed by prepositions}
+
+A number of prepositions in German show variation wrt.\ case marking of their NP complement. A well-known example is the accusative/dative alternation after certain prepositions, which systematically encodes a semantic distinction (directional/non-directional; REF). Contrasting with this kind of semantically relevant alternation, some prepositions exhibit variation in case assignment which is not semantically motivated, but rather considered stylistic. The present case study focuses on the alternation between genitive and dative case, as illustrated in (\ref{prep-example1})--(\ref{prep-example4}).
+
+\begin{exe}
+  \ex \label{prep-example1}
+    \begin{xlist}
+      \ex trotz [starkem Verkehr]$_{dat}$\\
+          `despite heavy traffic'
+      \ex trotz [ihres Namens]$_{gen}$\\ 
+          `despite her name'
+    \end{xlist}
+  \ex
+  \begin{xlist}
+    \ex wegen [dem Geschmack]$_{dat}$\\
+        `because of the taste'
+    \ex wegen [des besseren Aussehens]$_{gen}$\\ 
+        `because of the better appearance' 
+  \end{xlist}
+  \ex
+    \begin{xlist}
+      \ex entgegen [dem urspr\"unglichen Gesetzentwurf]$_{dat}$\\
+          `contrary to the original draft bill' 
+      \ex entgegen [des Gesamttrends]$_{gen}$\\ 
+          `contrary to the overall trend'
+  \end{xlist}
+  \ex \label{prep-example4}
+    \begin{xlist}
+        \ex gegen\"uber [einem Dritten]$_{dat}$\\
+            `vis-à-vis a third party'
+        \ex gegen\"uber [des Hotels]$_{gen}$\\ 
+            `opposite the hotel' 
+    \end{xlist}  
+\end{exe}
+
+
+ Typically, one of the variants is regarded as normative / canonical in Standard German, while the competing form has in many cases a non-standard flavour (see e.\,g., \citealp{Dimeola2009} and references therein).\footnote{For some prepositions, the normative case depends on morpho-syntactic properties of the complement NP. For instance, \textit{trotz} canonically assigns genitive, but dative is the only acceptable option with bare plural nouns which would otherwise lack a genitive inflectional ending. In what follows, we will only consider syntactic contexts where speakers/writers actually have a choice genitive and dative.} We therefore expect that the choice of case after these prepositions will depend, at least in part, on text type / genre, thus providing an ideal area for exploring the effects of feature aggregation. For the present case study, we selected a number of prepositions likely to exhibit some variation in dative/genitive case:
+ 
+ \begin{quote} 
+   abzüglich, angesichts, anlässlich, au{\ss}er, betreffs, bezüglich, dank, einschlie{\ss}lich, entgegen, gegenüber, gemä{\ss}, hinsichtlich, mangels, mitsamt, mittels, nebst, samt, seitens, trotz, vorbehaltlich, während, wegen, zuzüglich
+ \end{quote}
+
+
+We used the German web corpus DECOW16B \citep{SchaeferBildhauer2012} as well as the subset of the German reference corpus DeReKo \citep{Kupietz-ea2010} documented in\cite{BubenhoferKonopkaSchneider2014}. For each of these prepositions, all occurrences were extracted where the preposition is followed by either a determiner or an adjective that unambiguously mark dative or genitive case (cf. examples 1 and 8 above). Concordance lines from documents containing less than 100 tokens were discarded, so as to ensure that document-level feature counts are reasonably reliable. Moreover, we only kept a single instance per document, discarding all remaining instances. From this preliminary sample, we randomly selected 40,000 instances per corpus. Figure~\ref{genprops} shows the proportion of genitive complements by preposition and corpus.
+
+\begin{figure}
+   \includegraphics[scale=.7]{../R/prep-genitive-proportions}
+   \label{genprops}
+  \caption{Proportion of genitive complements (as opposed to dative) by preposition and corpus, in a sample of 80,000 prepositional phrases from DeReKo and DECOW16B}  
+\end{figure}
+
+
+A fair number (but by no means all) of the selected prepositions show some degree of variation in case assignment. For our final dataset, we selected only those prepositions where the proportion of either genitive or dative ocurrences was between 0.1 and 0.9 in at least one of the corpora. In other words, the amount of variation must be such that at least 10\% of all occurrences of that preposition show the minority, non-modal (and arguably, non-standard) case category. Thus, from among the original 23 prepositions, only 10 were included in the final dataset (\textit{entgegen}, \textit{gem\"a\ss}, \textit{mitsamt}, which typically select a dative complement, as well as \textit{dank}, \textit{einschlie{\ss}lich}, \textit{mangels}, \textit{mittels}, \textit{trotz}, \textit{wegen} and \textit{zuz\"uglich}, which typically select genitive). For this dataset, the overall occurence rate of non-standard case assignment is 15.4 \%.
+
+We first specify two logistic regression models that predict the probability of observing the non-modal/non-standard case category, and which do not distinguish between individual prepositions. First, we use the set of COReX variables, represented as $c_1$ \ldots $c_{60}$ in equation~\ref{glm-allpreps-corex}.
+
+\marginpar{Variable name}
+\begin{equation}
+\label{glm-allpreps-corex}
+  P(nonstandard.case=1) = logit^{-1}(\alpha + \beta_1 c_1 + \beta_2 c_2 + \dots + \beta_{60} c_{60})
+\end{equation}
+
+
+Of the resulting coefficient estimates, 32 are different from 0 at p < 0.05. The Nagelkerke Pseudo-R$^2$ score for this model is 0.28.
+
+For comparison, we use the document factor scores from the factor analysis as shown in equation~\ref{glm-allpreps-fa} (where the terms $f_1$ \ldots $f_7$ represent the factor scores of factors 1 through 7). In this model, all coefficient estimates are significant at the 0.05 level, however, the Nagelkerke R$^2$ score for this model drops to 0.24.
+
+\marginpar{Matrizenoder Laufindex oder Fußnote und erklären}
+\begin{equation}
+\label{glm-allpreps-fa}
+  P(nonstandard.case=1) = logit^{-1}(\alpha + \beta_1 f_1 + \beta_2 f_2 + \dots + \beta_{7} f_{7})
+\end{equation}
+
+
+Next, we consider separate models for each preposition, using all 60 COReX features as predictors. Figure~\ref{coeffs-corex-individial} illustrates the distribution of estimates for each preposition, for each coefficient with an associated p-value < .05 and absolute value < 5. As is obvious from the plot, coefficient estimates vary greatly, depending on the preposition. 
+
+\begin{figure}
+  \includegraphics[scale=.9]{../R/prep-individual-coeffs-bw}
+  \label{coeffs-corex-individial}
+  \caption{COReX features: coefficient estimates with associated p-value $< 0.05$; a separate model was specified for each preposition.}
+\end{figure}
+
