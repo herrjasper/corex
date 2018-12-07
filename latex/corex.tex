@@ -5,6 +5,7 @@
 \usepackage{gb4e+}
 \usepackage{graphicx}
 \usepackage{natbib}
+%\usepackage{newclude}
 
 \bibliographystyle{natbib.fullname}
 
@@ -13,11 +14,13 @@
 \begin{document}
 \maketitle
 
-\include{introduction}
-\include{corexdescription}
-\include{factoranalysis}
-\include{casestudies-intro}
-\include{prepositions}
+\input{introduction}
+\input{corexdescription}
+\input{clustering}
+\input{factoranalysis}
+\input{casestudies-intro}
+\input{prepositions}
 
+Warum geht das nicht: \cite{Biber1988} 
 \bibliography{BigBiblio}
 \end{document}
