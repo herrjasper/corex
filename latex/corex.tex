@@ -1,19 +1,37 @@
 \documentclass[11pt]{article}
-\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+
 \usepackage[english]{babel}
-\usepackage[T1]{fontenc}
+
 \usepackage{gb4e+}
 \usepackage{graphicx}
-\usepackage{natbib}
-%\usepackage{newclude}
 
-\bibliographystyle{natbib.fullname}
+%\usepackage[mono=false]{libertine}
+%\usepackage[T1]{fontenc}
+%\usepackage[utf8]{inputenc}
+%\usepackage{natbib}
+%\usepackage{newclude}
+%\bibliographystyle{natbib.fullname}
+%\usepackage{polyglossia}
+%\setmainlanguage[babelshorthands=true]{german}
+
+\usepackage[backend=biber,
+	natbib=true,
+	style=biblatex-sp-unified,
+	citestyle=sp-authoryear-comp,
+	maxbibnames=99,
+	isbn=false,
+	doi=false,
+	eprint=false
+]{biblatex}
+\addbibresource{BigBiblio.bib}
+
+
 
 \title{Automatic register annotation?}
 
 \begin{document}
 \maketitle
-
 \input{introduction}
 \input{corexdescription}
 \input{clustering}
@@ -22,5 +40,6 @@
 \input{prepositions}
 
 Warum geht das nicht: \cite{Biber1988} 
-\bibliography{BigBiblio}
+%\bibliography{BigBiblio}
+ \printbibliography
 \end{document}
