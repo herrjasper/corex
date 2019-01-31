@@ -146,9 +146,9 @@ corpussample_naked <- function(chunk, connectiondetails, tablename="uk_corex_min
   
   docs <- paste("(", paste(chunk, collapse = ", "), ")")
   querytext = paste("select", paste(colnames, collapse = ", "), " from ", tablename, " where ", selectby, " in ", docs)
-#  cat(querytext,"\n")
+  cat(querytext,"\n")
   rs <- dbSendQuery(mydb, querytext)
-    df <- dbFetch(rs, n=-1)
+  df <- dbFetch(rs, n=-1)
   dbDisconnect(mydb)
   return(df)
 }
@@ -175,6 +175,7 @@ parallel_from_dereko <- function(chunks, selectby){
 
 parallel_from_decow <- function(chunks, selectby){
   system.time({df <- mclapply(chunks, corpussample_naked, mc.cores = 7, connectiondetails_decow, tablename="decow16b_meta_min100", selectby=selectby)
+  head(df)
   df <- ldply(df, data.frame)
   df <- df[2:length(df)]})
   cat("Data frame from decow has", nrow(df), "rows,", ncol(df), "columns.\n")

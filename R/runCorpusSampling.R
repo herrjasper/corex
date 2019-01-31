@@ -12,8 +12,8 @@ tablename <- "uk_corex_min100"; ndocs <- 16763354; dbname <- 'dereko'
 tablename <- "decow16b_meta"; ndocs <- 16266522; dbname <- 'decow'
 tablename <- "decow16b_meta_min100"; ndocs <- 15119452; dbname <- 'decow'
 
-connectiondetails_dereko <- c('ukviewer', '', 'dereko', 'gramlinux02')
-connectiondetails_decow <- c('ukviewer', '', 'decow', 'gramlinux02')
+connectiondetails_dereko <- c('ukviewer', 'ukviewer', 'dereko', 'gramlinux02')
+connectiondetails_decow <- c('ukviewer', 'ukviewer', 'decow', 'gramlinux02')
 
 samplesize = 1000
 maxchunksize = 70
