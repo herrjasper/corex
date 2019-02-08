@@ -1,7 +1,10 @@
 
 \subsection{Dative vs genitive case governed by prepositions}
 
-A number of prepositions in German show variation wrt.\ case marking of their NP complement. A well-known example is the accusative/dative alternation after certain prepositions, which systematically encodes a semantic distinction (directional/non-directional; REF). Contrasting with this kind of semantically relevant alternation, some prepositions exhibit variation in case assignment which is not semantically motivated, but rather considered stylistic. The present case study focuses on the alternation between genitive and dative case, as illustrated in (\ref{prep-example1})--(\ref{prep-example4}).
+A number of prepositions in German show variation in assigning  case to their NP complement.
+A well-known example is the accusative/dative alternation after certain prepositions, which systematically encodes a semantic distinction (directional/non-directional movement; REF).
+Contrasting with this kind of semantically relevant alternation, some prepositions exhibit variation in case assignment which is not semantically motivated, but rather considered stylistic.
+The present case study focuses on alternations of the second type, involving genitive and dative case, as illustrated in (\ref{prep-example1})--(\ref{prep-example4}).
 
 \begin{exe}
   \ex \label{prep-example1}
@@ -21,7 +24,7 @@ A number of prepositions in German show variation wrt.\ case marking of their NP
   \ex
     \begin{xlist}
       \ex entgegen [dem urspr\"unglichen Gesetzentwurf]$_{dat}$\\
-          `contrary to the original draft bill' 
+          `contrary to the original bill' 
       \ex entgegen [des Gesamttrends]$_{gen}$\\ 
           `contrary to the overall trend'
   \end{xlist}
@@ -35,12 +38,19 @@ A number of prepositions in German show variation wrt.\ case marking of their NP
 \end{exe}
 
 
- Typically, one of the variants is regarded as normative / canonical in Standard German, while the competing form has in many cases a non-standard flavour (see e.\,g., \citealp{Dimeola2009} and references therein).\footnote{For some prepositions, the normative case depends on morpho-syntactic properties of the complement NP. For instance, \textit{trotz} canonically assigns genitive, but dative is the only acceptable option with bare plural nouns which would otherwise lack a genitive inflectional ending. In what follows, we will only consider syntactic contexts where speakers/writers actually have a choice genitive and dative.} We therefore expect that the choice of case after these prepositions will depend, at least in part, on text type / genre, thus providing an ideal area for exploring the effects of feature aggregation. For the present case study, we selected a number of prepositions likely to exhibit some variation in dative/genitive case:
+ Typically, one of the variants is regarded as normative / canonical in Standard German, while the competing form has in many cases a non-standard flavour (see e.\,g., \citealp{Dimeola2009} and references therein).\footnotemark\ 
+  We therefore expect that the choice of case after these prepositions depends partially on register and, more specifically, on the dimension of variation captured by Factor~1.
+Such case alternations thus provide a promising area for exploring the effects of feature aggregation in modeling register-sensitive linguistic alternation phenomena.
+
+For the present case study, we selected a number of prepositions likely to exhibit some variation in dative/genitive case:
  
  \begin{quote} 
    abzüglich, angesichts, anlässlich, au{\ss}er, betreffs, bezüglich, dank, einschlie{\ss}lich, entgegen, gegenüber, gemä{\ss}, hinsichtlich, mangels, mitsamt, mittels, nebst, samt, seitens, trotz, vorbehaltlich, während, wegen, zuzüglich
  \end{quote}
 
+\footnotetext{For some prepositions, the normative case depends on morpho-syntactic properties of the complement NP.
+ For instance, \textit{trotz} canonically assigns genitive, but dative is the only acceptable option with bare plural nouns which would otherwise lack a genitive inflectional ending.
+ In what follows, we will only consider syntactic contexts where speakers/writers actually have a choice between genitive and dative.}
 
 %We used the German web corpus DECOW16B \citep{SchaeferBildhauer2012} as well as the subset of the German reference corpus DeReKo \citep{Kupietz-ea2010} documented in \cite{BubenhoferKonopkaSchneider2014}. For each of these prepositions, all occurrences were extracted where the preposition is followed by either a determiner or an adjective that unambiguously mark dative or genitive case (cf. examples 1 and 8 above). Concordance lines from documents containing less than 100 tokens were discarded, so as to ensure that document-level feature counts are reasonably reliable. Moreover, we only kept a single instance per document, discarding all remaining instances. From this preliminary sample, we randomly selected 40,000 instances per corpus. Figure~\ref{genprops} shows the proportion of genitive complements by preposition and corpus.
 
@@ -51,9 +61,14 @@ A number of prepositions in German show variation wrt.\ case marking of their NP
 \end{figure}
 
 
-A fair number (but by no means all) of the selected prepositions show some degree of variation in case assignment. For our final dataset, we selected only those prepositions where the proportion of either genitive or dative ocurrences was between 0.1 and 0.9 in at least one of the corpora. In other words, the amount of variation must be such that at least 10\% of all occurrences of that preposition show the minority, non-modal (and arguably, non-standard) case category. Thus, from among the original 23 prepositions, only 10 were included in the final dataset (\textit{entgegen}, \textit{gem\"a\ss}, \textit{mitsamt}, which typically select a dative complement, as well as \textit{dank}, \textit{einschlie{\ss}lich}, \textit{mangels}, \textit{mittels}, \textit{trotz}, \textit{wegen} and \textit{zuz\"uglich}, which typically select genitive). For this dataset, the overall occurence rate of non-standard case assignment is 15.4 \%.
+A fair number (but by no means all) of the selected prepositions show some degree of variation in case assignment.
+For our final dataset, we selected only those prepositions where the proportion of either genitive or dative occurrences was between 0.1 and 0.9 in at least one of the corpora.
+In other words, the amount of variation must be such that at least 10\% of all occurrences of that preposition show the minority, non-modal (and arguably, non-standard) case category in at least one of the corpora.
+By this criterion, only 10 out of the original 23 prepositions were included in the final dataset (\textit{entgegen}, \textit{gem\"a\ss}, \textit{mitsamt}, which typically select a dative complement, as well as \textit{dank}, \textit{einschlie{\ss}lich}, \textit{mangels}, \textit{mittels}, \textit{trotz}, \textit{wegen} and \textit{zuz\"uglich}, which typically select genitive).
+For this dataset, the overall occurence rate of non-standard case assignment is 15.4 \%.
 
-We first specify two logistic regression models that predict the probability of observing the non-modal/non-standard case category, and which do not distinguish between individual prepositions. First, we use the set of COReX variables, represented as $c_1$ \ldots $c_{60}$ in equation~\ref{glm-allpreps-corex}.
+We first specify two logistic regression models that predict the probability of observing the non-modal/non-standard case category, and which do not distinguish between individual prepositions.
+First, we use the set of COReX variables, represented as $c_1$ \ldots $c_{60}$ in equation~\ref{glm-allpreps-corex}.
 
 \marginpar{Variable name}
 \begin{equation}

@@ -295,9 +295,11 @@ points(density(subset(random.subcorp.with.scores.forum, forum=="1")$PA1), col="d
 # only decow-data:
 ggplot(subset(random.subcorp.with.scores.forum, corpus=="decow"), aes(PA1, fill = forum)) + geom_density(alpha = 0.4)
 
+cbPalette <- c("#E69F00", "#009E73")
+#cbPalette <- c("#111111", "#999999")
 # all data:
-ggplot(random.subcorp.with.scores.forum, aes(PA1, fill = forum)) + geom_density(alpha = 0.6) + labs(x = "Document score on Factor 1 (short, clitindef, itj, qsvoc, pper2nd, ...)") + labs(title = "Factor 1: Distribution of scores by document type") #+ labs(caption = "(Based on FA of 140k random docs from DeReKo and DECOW16B)") 
-ggplot(random.subcorp.with.scores.forum, aes(PA1, fill = forum)) + geom_histogram(alpha = 0.6, aes(y = ..density..), bins = 500, position = 'identity') + labs(x = "Doc. score on Factor 2 (short, clitindef, itj, emo, qsvoc, pper2nd, ...)") + labs(caption = "(Based on FA of 140k random docs from DeReKo and DECOW16B)") + labs(title = "Factor 2: Distribution of scores by document type")
+ggplot(random.subcorp.with.scores.forum, aes(PA1, fill = forum)) +  scale_fill_manual(values=cbPalette) + geom_density(alpha = 0.6) + labs(x = "Factor score on Factor 1") + labs(title = "Factor 1: Distribution of scores by document type") #+ labs(caption = "(Based on FA of 140k random docs from DeReKo and DECOW16B)") 
+ggplot(random.subcorp.with.scores.forum, aes(PA1, fill = forum)) + scale_fill_manual(values=cbPalette) + geom_histogram(alpha = 0.7, aes(y = ..density..), bins = 500, position = 'identity') + labs(x = "Doc. score on Factor 2 (short, clitindef, itj, emo, qsvoc, pper2nd, ...)") + labs(caption = "(Based on FA of 140k random docs from DeReKo and DECOW16B)") + labs(title = "Factor 2: Distribution of scores by document type")
 
 ggplot(random.subcorp.with.scores.forum, aes(PA3, fill = corpus)) + geom_density(alpha = 0.6) + labs(x = "Doc. score on Factor 3 (vpast, plu)") + labs(title = "Factor 3: Distribution of scores by corpus")
 
@@ -315,7 +317,8 @@ ggplot(random.subcorp.with.scores.forum, aes(PA7, fill = corpus)) + geom_density
 ## inspect some typical documents with high/low scores on factor1:
 summary(random.subcorp.with.scores.forum$PA1)
 
-subset((subset(random.subcorp.with.scores.forum, PA1 > 30)), corpus=="dereko")
+head(subset((subset(random.subcorp.with.scores.forum, PA1 > 30)), corpus=="decow")[,c(1,65,71)])
+subset(random.subcorp.with.scores.forum, id=="02d2d403f2c7b848a910cf1fdcde59c7f07e")[,c("id", "PA1", "forum", "short", "clitindef", "itj", "emo", "unkn", "imp", "qsvoc", "nonwrd","pper_2nd", "adv", "pper_1st")]
 
 
 mean(subset(random.subcorp.with.scores.forum, forum==0)$PA1)
