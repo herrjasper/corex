@@ -8,13 +8,13 @@ library(ggplot2)
 source("fa_definitions.R")
 
 # set sample size PER CORPUS:
-samplesize = 1000 #70000
-maxchunksize = 500 #10000 
+samplesize = 70000 #1000 #70000
+maxchunksize = 10000 #500 #10000 
 replacement = FALSE
 
 # set column names:
 
-colnames <- c("id", "ttrat", "wlen", 
+colnames <- c("textsigle", "id", "ttrat", "wlen", 
               "slen", "modal", "vv", "vaux", 
               "vfin", "cn", "prep", "inf", "imp", "adv",
               "adj", "subjs", "subji", "conj", "wh",
@@ -41,7 +41,7 @@ cat("Sampling", samplesize, "documens from dereko...\n")
 tablename <- "uk_corex_min100"; ndocs <- 16763354; dbname <- 'dereko'
 docnums.dereko <- sample.int(ndocs, size = samplesize, replace = replacement)
 docchunks.dereko <- chunker(docnums.dereko, maxchunksize = maxchunksize)
-df.dereko.test <- parallel_from_dereko(chunks = docchunks.dereko, selectby = "num")
+df.dereko.neu <- parallel_from_dereko(chunks = docchunks.dereko, selectby = "num")
 
 
 # get sample from decow:
@@ -49,13 +49,20 @@ cat("Sampling", samplesize, "documens from decow16b...\n")
 tablename <- "decow16b_meta_min100"; ndocs <- 15119452; dbname <- 'decow'
 docnums.decow <- sample.int(ndocs, size = samplesize, replace = replacement)
 docchunks.decow <- chunker(docnums.decow, maxchunksize = maxchunksize)
-df.decow.test <- parallel_from_decow(chunks = docchunks.decow, selectby = "num")
+df.decow.neu <- parallel_from_decow(chunks = docchunks.decow, selectby = "num")
 
 # add 'corpus' identifier and rbind data frames:
-df.dereko$corpus <- rep("dereko", nrow(df.dereko))
-df.decow$corpus <- rep("decow", nrow(df.decow))
-random.subcorp <- rbind(df.dereko, df.decow)
+df.dereko.neu$forum <- 0
+df.dereko.neu$corpus <- "dereko"
+df.decow.neu$corpus <- "decow"
+df.dereko.neu <- df.dereko.neu[,c(2:65, 1)]
+df.decow.neu$textsigle <- NA
+colnames(df.decow.neu) == colnames(df.dereko.neu)
+random.subcorp.neu <- rbind(df.dereko.neu, df.decow.neu)
 
+# export sampled corpora as csv file for further assessment:
+write.table(df.dereko.neu, file="/Users/felix/Documents/Konferenzen/2019/dgfs-19-tutorial/randecow/R/random_dereko_70k.csv", sep = "\t", row.names = FALSE, quote = FALSE)
+write.table(df.decow.neu, file="/Users/felix/Documents/Konferenzen/2019/dgfs-19-tutorial/randecow/R/random_decow_70k.csv", sep = "\t", row.names = FALSE, quote = FALSE)
 ###############################################################################################
 
 colnames(random.subcorp)
@@ -252,14 +259,23 @@ fa.diagram(fa.n7.pa.promax.renamed, cut = 0.3)
 # - or there is a greater value for that feature on another factor.
 
 filtered.fa.loadings <- filter_loadings(fa.n7.pa.promax, threshold = 0.35)
+# after fixing the filter_loadings function:
+filtered.fa.loadings.new <- filter_loadings_new(fa.n7.pa.promax, threshold = 0.35)
 
 # calculate the actual document scores according to the filtered factor loadings:
 # make a matrix with a column for the doc-ID and one column for each factor from the fa:
 
 document.scores <- docscores_biber(random.subcorp, c(2:43,45:62), filtered.fa.loadings)
+# after fixing the filter_loadings function:
+document.scores.new <- docscores_biber(random.subcorp, c(2:43,45:62), filtered.fa.loadings.new)
+colnames(document.scores.new) <- c("id", "PA2.new", "PA1.new", "PA5.new", "PA4.new", "PA7.new", "PA6.new", "PA3.new")
+
 
 # merge document scores with original corpus df:
 random.subcorp.with.scores <- merge(x = random.subcorp, y = document.scores, by = "id", all.x = TRUE)
+# merge corrected document scores:
+random.subcorp.with.scores.forum.meta <- merge(x = random.subcorp.with.scores.forum.meta, y = document.scores.new, by = "id", all.x = TRUE)
+
 
 hist(random.subcorp.with.scores$PA2,breaks=100)
 hist(random.subcorp.with.scores$PA5,breaks=100)
@@ -273,9 +289,10 @@ mean(random.subcorp.with.scores[sample(nrow(random.subcorp.with.scores),10000),]
 head(random.subcorp.with.scores[,63:70])
 head(fa.n7.pa.promax$scores)
 
-# for decow documents, get forum 1/0 info from database:
+# for decow documents, get forum info from database:
 random.subcorp.decow.id <- subset(random.subcorp.with.scores, corpus=="decow")$id
 write.csv(random.subcorp.decow.id, file="random_subcorp_decow_id.csv")
+# fetch info from db, then re-import data frame:
 random.subcorp.decow.id.forum <- read.csv("random_subcorp_decow_id_forum.csv", header = FALSE, sep="\t")
 colnames(random.subcorp.decow.id.forum) <- c("id", "forum")
 # merge with existing data frame:
@@ -285,9 +302,23 @@ random.subcorp.with.scores.forum[which(random.subcorp.with.scores.forum$corpus==
 # check result:
 xtabs(~forum+corpus, data=random.subcorp.with.scores.forum)
 
+
+
+# for dereko documents, get forum info from database:
+random.subcorp.dereko.id <- subset(random.subcorp.with.scores, corpus=="dereko")$id
+write.csv(random.subcorp.dereko.id, file="random_subcorp_dereko_id.csv")
+# fetch info from db, re-import data frame:
+random.subcorp.dereko.meta <- read.csv("random_subcorp_dereko_meta.joined", header = TRUE, sep="\t") 
+# merge with existing data frame:
+random.subcorp.with.scores.forum.meta <- merge(x = random.subcorp.with.scores.forum, y = random.subcorp.dereko.meta, by = "id", all.x = TRUE)
+
+random.subcorp.with.scores.forum.meta$register <- as.factor(random.subcorp.with.scores.forum.meta$register)
+random.subcorp.with.scores.forum.meta$region <- as.factor(random.subcorp.with.scores.forum.meta$region)
+random.subcorp.with.scores.forum.meta$country <- as.factor(random.subcorp.with.scores.forum.meta$country)
+random.subcorp.with.scores.forum.meta$medium <- as.factor(random.subcorp.with.scores.forum.meta$medium)
+random.subcorp.with.scores.forum.meta$domain <- as.factor(random.subcorp.with.scores.forum.meta$domain)
+
 # plot distribution of document scores for some factors:
-
-
 
 plot(density(subset(random.subcorp.with.scores.forum, forum=="0")$PA1), col="darkorange", lwd=2)
 points(density(subset(random.subcorp.with.scores.forum, forum=="1")$PA1), col="darkgreen",lwd=2,type="l")
@@ -298,6 +329,8 @@ ggplot(subset(random.subcorp.with.scores.forum, corpus=="decow"), aes(PA1, fill 
 cbPalette <- c("#E69F00", "#009E73")
 #cbPalette <- c("#111111", "#999999")
 # all data:
+
+ggplot(random.subcorp.with.scores.forum, aes(PA1, fill = corpus)) +  scale_fill_manual(values=cbPalette) + geom_density(alpha = 0.6) + labs(x = "Factor score on Factor 1") + labs(title = "Factor 1: Distribution of scores by corpus") #+ labs(caption = "(Based on FA of 140k random docs from DeReKo and DECOW16B)") 
 ggplot(random.subcorp.with.scores.forum, aes(PA1, fill = forum)) +  scale_fill_manual(values=cbPalette) + geom_density(alpha = 0.6) + labs(x = "Factor score on Factor 1") + labs(title = "Factor 1: Distribution of scores by document type") #+ labs(caption = "(Based on FA of 140k random docs from DeReKo and DECOW16B)") 
 ggplot(random.subcorp.with.scores.forum, aes(PA1, fill = forum)) + scale_fill_manual(values=cbPalette) + geom_histogram(alpha = 0.7, aes(y = ..density..), bins = 500, position = 'identity') + labs(x = "Doc. score on Factor 2 (short, clitindef, itj, emo, qsvoc, pper2nd, ...)") + labs(caption = "(Based on FA of 140k random docs from DeReKo and DECOW16B)") + labs(title = "Factor 2: Distribution of scores by document type")
 
@@ -305,13 +338,51 @@ ggplot(random.subcorp.with.scores.forum, aes(PA3, fill = corpus)) + geom_density
 
 ggplot(random.subcorp.with.scores.forum, aes(PA2, fill = corpus)) + geom_density(alpha = 0.6) + labs(x = "Doc. score on Factor 2 (...)") + labs(title = "Factor 2: Distribution of scores by corpus")
 
-ggplot(random.subcorp.with.scores.forum, aes(PA5, fill = corpus)) + geom_density(alpha = 0.6) + labs(x = "Doc. score on Factor 5 (...)") + labs(title = "Factor 5: Distribution of scores by corpus")
+ggplot(random.subcorp.with.scores.forum, aes(PA5, fill = forum)) + geom_density(alpha = 0.6) + labs(x = "Doc. score on Factor 5 (...)") + labs(title = "Factor 5: Distribution of scores by corpus")
 
 ggplot(random.subcorp.with.scores.forum, aes(PA4, fill = corpus)) + geom_density(alpha = 0.6) + labs(x = "Doc. score on Factor 4 (...)") + labs(title = "Factor 4: Distribution of scores by corpus")
 
 ggplot(random.subcorp.with.scores.forum, aes(PA6, fill = corpus)) + geom_density(alpha = 0.6) + labs(x = "Doc. score on Factor 6 (...)") + labs(title = "Factor 6: Distribution of scores by corpus")
 
 ggplot(random.subcorp.with.scores.forum, aes(PA7, fill = corpus)) + geom_density(alpha = 0.6) + labs(x = "Doc. score on Factor 7 (...)") + labs(title = "Factor 7: Distribution of scores by corpus")
+
+#####
+
+# plot distribution of factor scores for other meta data categories (dereko data only):
+random.subcorp.with.scores.forum.meta.dereko <- subset(random.subcorp.with.scores.forum.meta, corpus=="dereko")[,c(1,seq(63,77))]
+random.subcorp.with.scores.forum.meta.dereko[] <- lapply(random.subcorp.with.scores.forum.meta.dereko, function(x) if(is.factor(x)) factor(x) else x)
+
+random.subcorp.with.scores.forum.meta.dereko[which(random.subcorp.with.scores.forum.meta.dereko$country==2),]$country <- 1
+random.subcorp.with.scores.forum.meta.dereko[which(random.subcorp.with.scores.forum.meta.dereko$country==3),]$country <- 1
+random.subcorp.with.scores.forum.meta.dereko$country <- factor(random.subcorp.with.scores.forum.meta.dereko$country)
+
+random.subcorp.with.scores.forum.meta.dereko$oral <- random.subcorp.with.scores.forum.meta.dereko$medium==4
+
+
+plot(density(random.subcorp.with.scores.forum.meta.dereko$PA3), col="darkorange", lwd=2)
+points(density(subset(random.subcorp.with.scores.forum.meta, register=="2")$PA3), col="darkgreen",lwd=2,type="l")
+points(density(subset(random.subcorp.with.scores.forum.meta, register=="3")$PA3), col="darkred",lwd=2,type="l")
+
+ggplot(random.subcorp.with.scores.forum.meta.dereko, aes(PA2, fill = oral))  + geom_density(alpha = 0.3) + labs(x = "Factor score on Factor 2") + labs(title = "Factor 2: Distribution of scores by document type")
+ggplot(random.subcorp.with.scores.forum.meta.dereko, aes(PA5, fill = oral))  + geom_density(alpha = 0.3) + labs(x = "Factor score on Factor 5") + labs(title = "Factor 5: Distribution of scores by document type")
+ggplot(random.subcorp.with.scores.forum.meta.dereko, aes(PA4, fill = oral))  + geom_density(alpha = 0.3) + labs(x = "Factor score on Factor 4") + labs(title = "Factor 4: Distribution of scores by document type")
+ggplot(random.subcorp.with.scores.forum.meta.dereko, aes(PA7, fill = oral))  + geom_density(alpha = 0.3) + labs(x = "Factor score on Factor 7") + labs(title = "Factor 7: Distribution of scores by document type")
+ggplot(random.subcorp.with.scores.forum.meta.dereko, aes(PA6, fill = oral))  + geom_density(alpha = 0.3) + labs(x = "Factor score on Factor 6") + labs(title = "Factor 6: Distribution of scores by document type")
+ggplot(random.subcorp.with.scores.forum.meta.dereko, aes(PA3, fill = oral))  + geom_density(alpha = 0.3) + labs(x = "Factor score on Factor 3") + labs(title = "Factor 3: Distribution of scores by document type")
+
+
+ggplot(random.subcorp.with.scores.forum.meta, aes(PA1.new, fill = forum))  + geom_density(alpha = 0.3) + labs(x = "Factor score on Factor 1") + labs(title = "Factor 1: Distribution of scores by forum")
+ggplot(random.subcorp.with.scores.forum.meta, aes(PA2.new, fill = forum))  + geom_density(alpha = 0.3) + labs(x = "Factor score on Factor 2") + labs(title = "Factor 2: Distribution of scores by forum")
+ggplot(random.subcorp.with.scores.forum.meta, aes(PA5.new, fill = medium)) + geom_density(alpha = 0.3) + labs(x = "Factor score on Factor 5") + labs(title = "Factor 5: Distribution of scores by corpus")
+ggplot(random.subcorp.with.scores.forum.meta, aes(PA4.new, fill = corpus)) + geom_density(alpha = 0.3) + labs(x = "Factor score on Factor 4") + labs(title = "Factor 4: Distribution of scores by corpus")
+ggplot(random.subcorp.with.scores.forum.meta, aes(PA7.new, fill = corpus)) + geom_density(alpha = 0.3) + labs(x = "Factor score on Factor 7") + labs(title = "Factor 7: Distribution of scores by corpus")
+ggplot(random.subcorp.with.scores.forum.meta, aes(PA6.new, fill = corpus)) + geom_density(alpha = 0.3) + labs(x = "Factor score on Factor 6") + labs(title = "Factor 6: Distribution of scores by corpus")
+ggplot(random.subcorp.with.scores.forum.meta, aes(PA3.new, fill = corpus)) + geom_density(alpha = 0.3) + labs(x = "Factor score on Factor 3") + labs(title = "Factor 3: Distribution of scores by corpus")
+
+
+
+str(subset(random.subcorp.with.scores.forum.meta, corpus=="dereko")$register)
+xtabs(~country, data = subset(random.subcorp.with.scores.forum.meta, corpus=="dereko"))
 
 
 ## inspect some typical documents with high/low scores on factor1:
@@ -320,6 +391,16 @@ summary(random.subcorp.with.scores.forum$PA1)
 head(subset((subset(random.subcorp.with.scores.forum, PA1 > 30)), corpus=="decow")[,c(1,65,71)])
 subset(random.subcorp.with.scores.forum, id=="02d2d403f2c7b848a910cf1fdcde59c7f07e")[,c("id", "PA1", "forum", "short", "clitindef", "itj", "emo", "unkn", "imp", "qsvoc", "nonwrd","pper_2nd", "adv", "pper_1st")]
 
+# Factor 5:
+mean(subset(random.subcorp.with.scores.forum.meta, forum==0)$PA5)
+head(subset(subset(random.subcorp.with.scores.forum.meta, PA5 < -10), corpus=="dereko")[,c("textsigle", "PA5", "wlen", "def", "pass", "cn", "cmpnd", "prep", "poss")],10)
 
-mean(subset(random.subcorp.with.scores.forum, forum==0)$PA1)
+# Factor 3:
+# get thresholds for most extreme 10% of values:
+quantile(random.subcorp.with.scores.forum.meta$PA3, probs = c(.1,.9))
+nrow(subset(random.subcorp.with.scores.forum.meta, PA3 > 2.318))
+nrow(subset(random.subcorp.with.scores.forum.meta, PA3 <= -1.558))
+# get random selection of extreme documents:
+subset(subset(random.subcorp.with.scores.forum.meta, PA3 > 2.318), corpus=="dereko")[sample(nrow(subset(subset(random.subcorp.with.scores.forum.meta, PA3 > 2.318), corpus=="dereko")),10),c("textsigle", "PA3", "vpast", "vpres", "plu")]
+
 

@@ -23,6 +23,7 @@ dereko.md <- parallel_from_dereko(chunks = id.dereko.chunks, selectby = "id")
 decow.md <- parallel_from_decow(chunks = id.decow.chunks, selectby = "id")
 combined.md <- rbind.data.frame(dereko.md,decow.md)
 
+
 # merge concordance df with corex df:
 prep.allnew.md <- merge(y = combined.md, x = prep.allnew, by = "id", all.y = TRUE)
 
@@ -31,13 +32,22 @@ prep.allnew.md.sample <- rbind.data.frame(prep.allnew.md[sample(which(prep.allne
 
 # inspect distribution of prepositions by corpus (all prepositions per corpus adding up to 1):
 barplot(xtabs(~corpus+target.prep, data=prep.allnew.md.sample)/40000, beside=TRUE,col = c("green", "darkorange"), las=2, ylim=c(0,0.4))
+
 # same, but with raw counts, not proportions:
 barplot(xtabs(~corpus+target.prep, data=prep.allnew.md.sample), beside=TRUE,col = c("green", "darkorange"), las=2)
 
-
+##############################################################
 # inspect proportion of genitive, per preposition per corpus:
+
 prep.allnew.md.sample.genprops <- xtabs(~corpus+target.prep, data=subset(prep.allnew.md.sample, case=="gen"))/xtabs(~corpus+target.prep, data=prep.allnew.md.sample)
 prep.allnew.md.sample.genprops.ordered <- prep.allnew.md.sample.genprops[,order(prep.allnew.md.sample.genprops[1,])]
+# same for full data set:
+prep.allnew.md.genprops <- xtabs(~corpus+target.prep, data=subset(prep.allnew.md, case=="gen"))/xtabs(~corpus+target.prep, data=prep.allnew.md)
+prep.allnew.md.genprops.ordered <- prep.allnew.md.genprops[,order(prep.allnew.md.genprops[1,])]
+###############################################################
+
+###############################################################
+# plot proportion of genitives:
 
 opar <- (mar=c(5.1,4.1,4.1,2.1))
 par(mar=c(7.3,4.1,4.1,2.1))
@@ -47,14 +57,11 @@ par(xpd=TRUE)
 #legend(0, 1, legend=rownames(prep.allnew.md.sample.genprops), cex = 1, fill=TRUE, angle=c(45,135), density=c(90,20), bty = "n")
 legend(0, 1, legend=rownames(prep.allnew.md.sample.genprops), cex = 1, fill=c("black", "lightgray"),  bty = "n")
 
-prep.allnew.md.sample.genprops[,order(prep.allnew.md.sample.genprops[1,])]
-order(prep.allnew.md.sample.genprops[1,])
-prep.allnew.md.sample.genprops[1,]
-prep.allnew.md.sample.genprops
+# same for full data set:
+barplot(prep.allnew.md.genprops.ordered,  beside=TRUE, las=2, cex.names = 1.2, col=c("black", "lightgray"))
+legend(0, 1, legend=rownames(prep.allnew.md.genprops), cex = 1, fill=c("black", "lightgray"),  bty = "n")
+################################################################
 
-
-
-#legend("topleft", c("DeReKo","DECOW"), fill  = c("orange", "green3"))
 
 # get prepositions for which the proportion of genitves is between .1 and .9 
 # in at least one of the corpora (i.e., prepositions that show a fair amount of variation at all):
@@ -67,16 +74,16 @@ varying.preps <- levels(factor(subset(subset(as.data.frame(prep.allnew.md.sample
 # summary(glm.corex.gen)
 # NagelkerkeR2(glm.corex.gen)
 
-docscores <- docscores_biber(prep.allnew.md.sample, c(10:51,53:70), filtered.fa.loadings)
+docscores <- docscores_biber(prep.allnew.md.sample, c(10:51,53:70), filtered.fa.loadings.new)
 # try with scaled values, for comparison:
 prep.allnew.md.sample.scaled <- prep.allnew.md.sample
 prep.allnew.md.sample.scaled[, c(10:70)] <-  lapply(prep.allnew.md.sample.scaled[, c(10:70)], scale)
-docscores.scaled <- docscores_biber(prep.allnew.md.sample.scaled, c(10:51,53:70), filtered.fa.loadings)
+docscores.scaled <- docscores_biber(prep.allnew.md.sample.scaled, c(10:51,53:70), filtered.fa.loadings.new)
 
 # merge document scores with original corpus df:
-prep.allnew.md.sample.docscores <- merge(x = prep.allnew.md.sample, y = docscores, by = "id", all.x = TRUE)
+prep.allnew.md.sample.docscores.new <- merge(x = prep.allnew.md.sample, y = docscores, by = "id", all.x = TRUE)
 # do the same with the scaled data:
-prep.allnew.md.sample.scaled.docscores <- merge(x = prep.allnew.md.sample.scaled, y = docscores.scaled, by = "id", all.x = TRUE)
+prep.allnew.md.sample.scaled.docscores.new <- merge(x = prep.allnew.md.sample.scaled, y = docscores.scaled, by = "id", all.x = TRUE)
 
 #################
 
@@ -155,7 +162,7 @@ length(which(coef(summary(glm.fa.allprep.ns))[,4] < 0.05))
 summary(glm.fa.allprep.ns)
 # 0.24
 #
-# but most of this rather high R2 is because "wegen" ist very strongly represented in teh data set, and it seems to be particularly well predictable 
+# but most of this rather high R2 is because "wegen" ist very strongly represented in the data set, and it seems to be particularly well predictable 
 # from the selected features (i.e., seems to be strongly related to standard vs. non-standard), 
 # the only dimension that really sticks out from the FA.
 # If "wegen" is discarded from the data set, Nagelkerke R2 drops to 0.08 (COReX) and 0.05 (FA).
@@ -165,9 +172,14 @@ summary(glm.fa.allprep.ns)
 # inspect models for individual prepositions:
 
 glm.corex.wegen.ns <- glm(f.corex.ns, data=subset(prep.allnew.md.sample.scaled.docscores.prepselection, target.prep=="wegen"), family = "binomial")
-summary(glm.corex.wegen.ns)
-glm.fa.allprep.ns <- glm(f.fa.ns, data=prep.allnew.md.sample.scaled.docscores.prepselection, family = "binomial")
+NagelkerkeR2(glm.corex.wegen.ns)
 
+glm.fa.allprep.ns <- glm(f.fa.ns, data=prep.allnew.md.sample.scaled.docscores.prepselection, family = "binomial")
+glm.fa.wegen.ns <- glm(f.fa.ns, data=subset(prep.allnew.md.sample.scaled.docscores.prepselection, target.prep=="wegen"), family = "binomial")
+
+NagelkerkeR2(glm.corex.wegen.ns)
+NagelkerkeR2(glm.fa.wegen.ns)
+NagelkerkeR2(glm.fa.allprep.ns)
 
 ########################
 # check other predictors
@@ -187,6 +199,7 @@ NagelkerkeR2(glm.forum.allprep)
 # Try POS tag of next 
 head(prep.allnew.md.sample.scaled.docscores.prepselection)
 do_glms_open(prep.allnew.md.sample.scaled.docscores.prepselection, "case ~ next.pos")
+
 
 # works well for "trotz" (with and adjective following, we get more dative; cf. Duden)
 m <- (glm(paste("case", " ~ ", paste(corex.predictors, collapse = " + ")), data=subset(prep.allnew.md.sample.scaled.docscores.prepselection, target.prep=="mangels"), family=binomial))

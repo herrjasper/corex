@@ -38,7 +38,7 @@ The present case study focuses on alternations of the second type, involving gen
 \end{exe}
 
 
- Typically, one of the variants is regarded as normative / canonical in Standard German, while the competing form has in many cases a non-standard flavour (see e.\,g., \citealp{Dimeola2009} and references therein).\footnotemark\ 
+ Typically, one of the variants is considered as normative / canonical in Standard German, while the competing form has in many cases a non-standard flavour (see e.\,g., \citealp{Dimeola2009} and references therein).\footnotemark\ 
   We therefore expect that the choice of case after these prepositions depends partially on register and, more specifically, on the dimension of variation captured by Factor~1.
 Such case alternations thus provide a promising area for exploring the effects of feature aggregation in modeling register-sensitive linguistic alternation phenomena.
 
@@ -52,10 +52,11 @@ For the present case study, we selected a number of prepositions likely to exhib
  For instance, \textit{trotz} canonically assigns genitive, but dative is the only acceptable option with bare plural nouns which would otherwise lack a genitive inflectional ending.
  In what follows, we will only consider syntactic contexts where speakers/writers actually have a choice between genitive and dative.}
 
+
 %We used the German web corpus DECOW16B \citep{SchaeferBildhauer2012} as well as the subset of the German reference corpus DeReKo \citep{Kupietz-ea2010} documented in \cite{BubenhoferKonopkaSchneider2014}. For each of these prepositions, all occurrences were extracted where the preposition is followed by either a determiner or an adjective that unambiguously mark dative or genitive case (cf. examples 1 and 8 above). Concordance lines from documents containing less than 100 tokens were discarded, so as to ensure that document-level feature counts are reasonably reliable. Moreover, we only kept a single instance per document, discarding all remaining instances. From this preliminary sample, we randomly selected 40,000 instances per corpus. Figure~\ref{genprops} shows the proportion of genitive complements by preposition and corpus.
 
 \begin{figure}
-   \includegraphics[scale=.7]{../R/prep-genitive-proportions}
+   \includegraphics[scale=.7]{../R/plots/prep-genitive-proportions}
    \label{genprops}
   \caption{Proportion of genitive complements (as opposed to dative) by preposition and corpus, in a sample of 80,000 prepositional phrases from DeReKo and DECOW16B}  
 \end{figure}
@@ -91,7 +92,7 @@ For comparison, we use the document factor scores from the factor analysis as sh
 Next, we consider separate models for each preposition, using all 60 COReX features as predictors. Figure~\ref{coeffs-corex-individial} illustrates the distribution of estimates for each preposition, for each coefficient with an associated p-value < .05 and absolute value < 5. As is obvious from the plot, coefficient estimates vary greatly, depending on the preposition. 
 
 \begin{figure}
-  \includegraphics[scale=.9]{../R/prep-individual-coeffs-bw}
+  \includegraphics[scale=.9]{../R/plots/prep-individual-coeffs-bw}
   \label{coeffs-corex-individial}
   \caption{COReX features: coefficient estimates with associated p-value $< 0.05$; a separate model was specified for each preposition.}
 \end{figure}

@@ -18,10 +18,17 @@
 #
 # from Stackoverflow:
 
-filter_loadings <- function(fa.output, threshold = 0.35){
+filter_loadings_old <- function(fa.output, threshold = 0.35){
   Y <- t(apply(fa.output$loadings, 1, function(z){1 * (z == max(z) & abs(z) >= threshold)}))
   return(Y)
 } 
+
+filter_loadings <- function(fa.output, threshold = 0.35){
+  Y <- t(apply(fa.output$loadings, 1, function(z){sign(z) * (abs(z) == max(abs(z)) & abs(z) >= .35)} ))
+  return(Y)
+} 
+
+
 
 
 docscores_biber <- function(corpus_df, corpus_columns_used_in_fa, filtered_loadings){

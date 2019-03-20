@@ -29,9 +29,9 @@ The \textit{genitive} count, originally extracted by COReX, was discarded in vie
  
  
 \begin{figure}
-   \includegraphics[scale=.9]{../R/fa-fa-7-promax-padded}
+   \includegraphics[scale=.9]{../R/plots/fa-fa-7-promax-padded}
    \label{fa-pa-7-factors}
-  \caption{Factor loadings of 60 COReX features, from a factor analysis of 140.000 randomly selected documents (DeReKo and DECOW16 combined, minimal document length = 100 tokens), 7 factors, principal factor method, promax rotation. Only the highest factor loading is shown for each feature (loadings < 0.35 are omitted).}  
+  \caption{Factor loadings of 60 COReX features, from a factor analysis of 140.000 randomly selected documents (DeReKo and DECOW16 combined, minimal document length = 100 tokens), 7 factors, principal factor method, promax rotation. Only the highest factor loading is shown for each feature (loadings between $-0.35$ and $0.35$ are omitted).}  
 \end{figure}
 
 
@@ -61,9 +61,9 @@ One distinction that can be made, though, is between texts from internet discuss
 We would expect forum discussions to exhibit a high degree of interaction (question/comment - reaction/answer), as well as a fair amount of non-redacted, non-standard language, and this is indeed what we find when we compare the distribution of document scores on Factor~1 for forum (mean 14.6) and non-forum (mean -1.3) documents, as shown in Figure~\ref{forum-factor1}.
 
 \begin{figure}
-   \includegraphics[scale=.95]{../R/forum-factor1.pdf}
+   \includegraphics[scale=.95]{../R/plots/forum-factor1.pdf}
    \label{forum-factor1}
-  \caption{Distribution of factor scores (Factor~1). On average, forum documents show higher scores (14.6) than non-forum documents (-1.3). Prominent features on Factor~1 include short/contracted word forms, cliticised variants of the indefinite article, interjections, imperatives, 1st and 2nd person pronouns, emoticons, and words typical of informal written language.}  
+  \caption{Distribution of factor scores (Factor~1). On average, forum documents show higher scores (14.6) than non-forum documents ($-$1.3). Prominent features on Factor~1 include short/contracted word forms, cliticised variants of the indefinite article, interjections, imperatives, 1st and 2nd person pronouns, emoticons, and words typical of informal written language.}  
 \end{figure}
 
 By generating factor scores for each of the 7 factors for each document, we have enriched our corpus with 7 additional meta data variables at the document level.
