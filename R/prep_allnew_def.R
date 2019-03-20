@@ -11,7 +11,7 @@ do_glms <- function(df, subcorp=""){
     m.corex <- glm(f.corex, family = binomial, data=dataset)
     m.fa <- glm(f.fa, family = binomial, data=dataset)
     
-    results[count,] <- c(l, nrow(dataset), nrow(subset(dataset, case=="gen")), round(nrow(subset(dataset, case=="gen"))/nrow(dataset),3), round(NagelkerkeR2(m.corex)$R2,3), round(NagelkerkeR2(m.fa)$R2,3))
+    results[count,] <- c(l, nrow(dataset), nrow(subset(dataset, nscase==1)), round(nrow(subset(dataset, nscase==1))/nrow(dataset),3), round(NagelkerkeR2(m.corex)$R2,3), round(NagelkerkeR2(m.fa)$R2,3))
     cat(l,":\n")
     cat("\tData points:\t", nrow(dataset), "\n")
     cat("\t% genitive:\t", (nrow(subset(dataset, case=="gen"))/nrow(dataset))*100, "\n")
@@ -21,6 +21,7 @@ do_glms <- function(df, subcorp=""){
   results <- as.data.frame(results)
   return(results)
 }
+
 
 do_glms_open <- function(df, formula, subcorp=""){
   results <- matrix(NA, ncol = 5, nrow = length(levels(df$target.prep)))
