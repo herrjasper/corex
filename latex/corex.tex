@@ -1,19 +1,15 @@
 \documentclass[11pt]{article}
-\usepackage{fontspec}
 
 \usepackage[english]{babel}
 
-\usepackage{gb4e+}
+\usepackage{langsci-gb4e}
 \usepackage{graphicx}
 
-%\usepackage[mono=false]{libertine}
-%\usepackage[T1]{fontenc}
-%\usepackage[utf8]{inputenc}
-%\usepackage{natbib}
-%\usepackage{newclude}
-%\bibliographystyle{natbib.fullname}
-%\usepackage{polyglossia}
-%\setmainlanguage[babelshorthands=true]{german}
+\usepackage{unicode-math}
+\usepackage{fontspec}
+\usepackage{libertine}
+\setmathfont[Scale=MatchUppercase]{Libertinus Math}
+\setmonofont{Inconsolata-g}
 
 \usepackage[backend=biber,
 	natbib=true,
@@ -32,8 +28,6 @@
 
 \addbibresource{corex_biber.bib}
 
-
-
 \title{Automatic register annotation?}
 
 \begin{document}
@@ -45,6 +39,5 @@
 \input{casestudies-intro}
 \input{prepositions}
 
-%\bibliography{BigBiblio}
- \printbibliography
+\printbibliography
 \end{document}
