@@ -24,6 +24,7 @@
 	eprint=false
 ]{biblatex}
 %\addbibresource{BigBiblio.bib}
+\addbibresource{schaefer.bib}
 
 % corex_biber.bib was created automatically by running
 % `biber --output_format=bibtex --output_resolve corex.bcf`
@@ -35,7 +36,10 @@
 \newcommand{\Ie}{I.\,e.}
 \newcommand{\eg}{e.\,g.}
 \newcommand{\Eg}{E.\,g.}
-
+%\newcommand{\Sub}[1]{\ensuremath{\mathrm{_{#1}}}}
+%\newcommand{\Sup}[1]{\ensuremath{\mathrm{^{#1}}}}
+\newcommand{\Sub}[1]{}
+\newcommand{\Sup}[1]{}
 
 \title{Automatic register annotation?}
 
@@ -47,6 +51,7 @@
 \input{factoranalysis}
 \input{casestudies-intro}
 \input{prepositions}
+\input{measurenouns-casestudy}
 
 \printbibliography
 \end{document}

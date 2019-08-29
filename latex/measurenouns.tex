@@ -1,3 +1,24 @@
-\subsection{Measure nouns}
+This case study represents a replication of \citet{Schaefer2018}.
+The authors models case alternation in German measure noun phrases (MNPs) based on data from the DECOW corpus \citep{SchaeferBildhauer2012}.
+Only MNPs with a kind-denoting noun (such as \textit{Wein} `wine') and a measure noun (such as \textit{Glas} `glass') similar to English \textit{a glass of wine} are considered.
+In the first alternant, the kind noun is in the genitive as in (\ref{ex:intro:alternation1}).
+In the second alternant, the kind noun shows case identity with the head measure noun as in (\ref{ex:intro:alternation2}).%
+\footnote{Examples are taken from \citet[735]{Schaefer2018}.}
 
+\begin{exe}
+  \ex\label{ex:intro:alternation}
+  \begin{xlist}
+    \ex \gll Wir trinken [[ein Glas]\Sub{Acc} [guten Weins]\Sub{Gen}]\Sub{Acc}.\\
+    we drink a glass good wine \\
+    \trans We drink a glass of good wine.\label{ex:intro:alternation1}
+    \ex Wir trinken [[ein Glas]\Sub{Acc} [guten Wein]\Sub{Acc}].\label{ex:intro:alternation2}
+  \end{xlist}
+\end{exe}
 
+It is noteworthy that the alternation only occurs if the embedded kind noun is determinerless but is modified by an adjective \citep[737--738]{Schaefer2018}.
+Based on theoretical analysis, the author names a number of influencing factors for this alternation such as whether the whole MNP has a cardinal determiner, which case it stands in as a whole, and how strongly the individual lexical items favour a specific variant.
+Based on previously published assumptions (\eg, \citealt{Hentschel1993,Zimmer2015}), he also models the effect of register or style.
+It is generally assumed that certain registers or styles favour the genitive alternant over the alternant with case identity.
+However, given the annotation available in the corpus, only two weak indicator variables are used as proxies, namely \texttt{Badness} (a measure of document quality available for all DECOW documents; see \citealt{SchaeferEa2013}) and \texttt{Genitives} (a measure of the frequency of genitives).
+Only \textit{Genitives} passes the tests in the original study, and it is a weak effect \citep[749--751]{Schaefer2018}.
+These indicator variables are effectively like a highly reduced COReX feature set, and we attempt replicate the study here in our exploration of the usefulness of the COReX features.
