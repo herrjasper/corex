@@ -1,6 +1,54 @@
 \subsubsection{Comparing aggregated with non-aggregated predictors}
 
-For this case study, we selected all combinations of measure nouns and kind-denoting nouns that occurred at least 10 times in the published dataset\footnote{DOI/URL: https://dx.doi.org/10.5281/zenodo.1254871} of \cite{Schaefer2018}. This resulted in 107 distinct combinations such as \textit{Haufen - Schrott} (`pile - junk') and \textit{Schüssel - Salat} (`bowl - salad'). We run the same automated queries that were used in \cite{Schäfer2018} a) on the DEECOW16 web corpus, and b) on a subset of DeReKo These combinations where 
+For this case study, we selected all combinations of measure nouns and kind-denoting nouns that occurred at least 10 times in the published dataset\footnote{DOI/URL: https://dx.doi.org/10.5281/zenodo.1254871} of \cite{Schaefer2018}, resulting in 107 distinct combinations such as \textit{Haufen - Schrott} (`pile - junk') and \textit{Schüssel - Salat} (`bowl - salad'). For these combinations, we extracted all instances of both alternants (i.\,e., the alternant with case identity and the genitive alternant, as illustrated in (\ref{ex:intro:alternation}) above) from both the DECOW16 web corpus and DeReKo\footnote{Again, we used the subset of \cite{Bubenhofer-ea2014}}. As in the case study on prepositions, we then discarded all but one instance per document in order to avoid correlated data points at the document level. This procedure yielded a total of 7906 data points, instantiated by 31 distinct measure nouns and 56 distinct kind-denoting nouns. Table~\ref{mn-dataset-summary} gives the distribution of construction type by corpus. Strikingly, the proportion of the genitive alternant in DECOW16B consiiderably lower than in DeReKo. Given that it is plausible to assume that the corpora comprise very different registers (with DeReKo leaning more to kind of formal and well-redacted language typical of newspaper articles), the distribution would seem to lend further support to the idea that the alternation is, at least to some degree, influenced by register and/or style.
+
+\begin{table}
+  \begin{tabular}{lll}
+  \toprule
+                 & \multicolumn{2}{c}{Corpus}\\
+  Construction   & DECOW16B & DeReKo\\
+  \midrule
+  Case identity  &  4360    & 1394 \\
+  Genitive       &  1272    & 880 \\
+  \bottomrule
+  \end{tabular}
+  \caption{Distribution of alternants by corpus. The proportion of the genitive alternant in DeReKo (0.39) is considerably higher than in DECOW16B (0.23).}\label{mn-dataset-summary}  
+\end{table}
 
 
-instantiated by 31 distinct measure nouns and 56 distinct kind-denoting nouns.
+Again, we model the contribution of different kinds of document-level information to explaining the variation phenomenon. As before, we specify a model using the seven document scores obtained from the factor analysis as predictors, and in a separate model, we directly use the 60 document-level counts obtained from COReX. In addition, in a third model, we again add 53 predictors containing random data to the model with FA predictors, thus minimizing the risk that potential differences in model fit are merely due to the larger number of predictors (i.\,e., accidental correlation) in the COReX-based model. Table~\ref{mn-results} shows the comparison of model fit.
+
+ 
+\begin{equation}
+\label{mn-glm-allpreps-corex}
+  P(Genitive=1) = logit^{-1}(\alpha + \beta_1 c_1 + \beta_2 c_2 + \dots + \beta_{60} c_{60})
+\end{equation}
+
+
+
+\marginpar{Matrizen oder Laufindex oder Fußnote und erklären}
+\begin{equation}
+\label{mn-glm-allpreps-fa}
+  P(Genitive=1) = logit^{-1}(\alpha + \beta_1 f_1 + \beta_2 f_2 + \dots + \beta_{7} f_{7})
+\end{equation}
+
+
+\begin{equation}
+\label{mn-glm-allpreps-fa-rr}
+  P(Genitive=1) = logit^{-1}(\alpha + \beta_1 f_1 + \beta_2 f_2 + \dots + \beta_{7} f_{7} + r_1 \beta_8 + r_2 \beta9 \ldots + r_{53} \beta_{46})
+\end{equation}
+
+
+\begin{table}
+  \begin{tabular}{lrrrrrr}
+  \toprule
+             & Total  & Genitive & p(Genitive) & R$^2_{COReX}$ & R$^2_{FA}$ & R$^2_{FA+Noise}$\\
+  \midrule
+            & 7906   & 1737   & 0.27    & 0.214   & 0.115  & 0.125\\
+%  
+  \bottomrule
+  \end{tabular}
+  \caption{Comparison of model fit (Nagelkerke's pseudo R$^2$) between three different models for each preposition: one with COReX predictors, one with FA predictors, and one with the same FA predictors and 53 addition predictors representing random data.}\label{mn-results}
+\end{table}
+%
+
