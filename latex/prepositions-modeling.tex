@@ -100,23 +100,24 @@ Next, we consider separate models for each preposition, using first all 60 COReX
 
 
 \begin{table}
-  \begin{tabular}{lrrrrr}
+  \begin{tabular}{lrrrrrr}
   \toprule
-            Preposition  & Total  & nscase & p(nscase) & R$^2_{COReX}$ & R$^2_{FA}$ \\
+            Preposition  & Total  & nscase & p(nscase) & R$^2_{COReX}$ & R$^2_{FA}$ & R$^2_{FA+Noise}$\\
   \midrule
-            dank  & 7562   & 1737   & 0.230    & 0.085   & 0.046  \\
-  einschließlich  & 7540   &  767   & 0.102    & 0.112   & 0.061 \\
-        entgegen  & 7473   &  969   & 0.130    & 0.067   & 0.028 \\
-           gemäß  & 7494   &  953   & 0.127    & 0.028   & 0.003 \\
-         mangels  & 6018   & 1808   & 0.300    & 0.214   & 0.135 \\
-         mitsamt  & 7415   &  808   & 0.109    & 0.043   & 0.007 \\
-         mittels  & 7458   &  985   & 0.132    & 0.088   & 0.037 \\
-           trotz  & 7513   &  939   & 0.125    & 0.128   & 0.087 \\
-           wegen  & 7325   & 1271   & 0.174    & 0.503   & 0.457 \\
-       zuzüglich  & 4210   &  892   & 0.212    & 0.187   & 0.127  \\
+            dank  & 7562   & 1737   & 0.230    & 0.085   & 0.046  & 0.055 \\
+  einschließlich  & 7540   &  767   & 0.102    & 0.112   & 0.061  & 0.078 \\
+        entgegen  & 7473   &  969   & 0.130    & 0.067   & 0.028  & 0.041 \\
+           gemäß  & 7494   &  953   & 0.127    & 0.028   & 0.003  & 0.020 \\
+         mangels  & 6018   & 1808   & 0.300    & 0.214   & 0.135  & 0.147 \\
+         mitsamt  & 7415   &  808   & 0.109    & 0.043   & 0.007  & 0.017 \\
+         mittels  & 7458   &  985   & 0.132    & 0.088   & 0.037  & 0.056 \\
+           trotz  & 7513   &  939   & 0.125    & 0.128   & 0.087  & 0.101 \\
+           wegen  & 7325   & 1271   & 0.174    & 0.503   & 0.457  & 0.465 \\
+       zuzüglich  & 4210   &  892   & 0.212    & 0.187   & 0.127  & 0.148 \\
   \bottomrule
   \end{tabular}
-  \caption{Comparison of model fit (Nagelkerke's pseudo R$^2$) between two different models for each preposition: one with FA predictos, one with COReX predictors (10 different GLMs in total).}\label{prepositions-glm-comparison}  
+  \caption{Comparison of model fit (Nagelkerke's pseudo R$^2$) between 3 different models for each preposition: a) a model with 60 COReX predictors; b) a model with 7 FA predictors; and c) a model with 7 FA predictors plus 53 predictors containing random data (noise). %(i.\,e., 30 models in total: 3 different GLM specifications, 10 different datasets).
+  }\label{prepositions-glm-comparison}  
 \end{table}
 
 
