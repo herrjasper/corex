@@ -1,11 +1,12 @@
 \section{Case studies}
 \label{sec:case-studies}
 In this section, we explore the consequences of aggregating individual linguistic predictors into more abstract factors, for the purpose of modeling linguistic alternation phenomena.
-In a \marginpar{series?}series of case studies, we model particular morpho-syntactic alternation phenomena with generalized linear models (GLMs), using different sorts of document-level information as predictors. For each case, we specify two alternative models, estimate the model coefficients, and compare these models wrt.\ to model fit and prediction accuracy:
+In a \marginpar{series?}series of case studies, we model particular morpho-syntactic alternation phenomena with generalized linear models (GLMs), using different sorts of document-level information as predictors. For each case, we specify three alternative models, estimate the model coefficients, and compare these models wrt.\ to model fit and prediction accuracy:
 
 \begin{enumerate}
-  \item a model which uses as predictors the 7 factor scores from the factor analysis described in the previous section
-  \item a model which uses as predictors the set of individual COReX features
+  \item\label{corexmodels} A model which uses as predictors the set of 60 individual COReX features.
+  \item\label{famodels} A model which uses as predictors the seven factor scores from the factor analysis described in the previous section.
+  \item A model which uses as predictors the same seven factor scores as model \ref{famodels}, plus another 53 predictor variables containing random data from a normal distribution (mean = 0, sd=1). This is to allow for a fair comparison with the COReX-based models (\ref{corexmodels}), which otherwise could show better model fit merely because of accidental correlations between some of the many COReX features and the outcome.
 \end{enumerate}
 
 We are aware that these linguistic phenomena could probably be better explained / modeled if other kinds of predictors were taken into account as well (e.\,g., lexical information, syntactic properties at various levels).

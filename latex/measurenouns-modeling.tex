@@ -1,6 +1,12 @@
 \subsubsection{Comparing aggregated with non-aggregated predictors}
 
-For this case study, we selected all combinations of measure nouns and kind-denoting nouns that occurred at least 10 times in the published dataset\footnote{DOI/URL: https://dx.doi.org/10.5281/zenodo.1254871} of \cite{Schaefer2018}, resulting in 107 distinct combinations such as \textit{Haufen - Schrott} (`pile - junk') and \textit{Schüssel - Salat} (`bowl - salad'). For these combinations, we extracted all instances of both alternants (i.\,e., the alternant with case identity and the genitive alternant, as illustrated in (\ref{ex:intro:alternation}) above) from both the DECOW16 web corpus and DeReKo\footnote{Again, we used the subset of \cite{Bubenhofer-ea2014}}. As in the case study on prepositions, we then discarded all but one instance per document in order to avoid correlated data points at the document level. This procedure yielded a total of 7906 data points, instantiated by 31 distinct measure nouns and 56 distinct kind-denoting nouns. Table~\ref{mn-dataset-summary} gives the distribution of construction type by corpus. Strikingly, the proportion of the genitive alternant in DECOW16B is considerably lower than in DeReKo. Given the plausible assumption that the two corpora comprise very different registers (with DeReKo leaning more towards the kind of formal, well-redacted language typical of newspaper articles), the observed distribution of alternants lends further support to the idea that the alternation is, at least to some degree, influenced by register and/or style.
+For this case study, we selected all combinations of measure nouns and kind-denoting nouns that occurred at least 10 times in the published dataset\footnote{DOI/URL: https://dx.doi.org/10.5281/zenodo.1254871} of \cite{Schaefer2018}, resulting in 107 distinct combinations such as \textit{Haufen - Schrott} (`pile - junk') and \textit{Schüssel - Salat} (`bowl - salad').
+ For these combinations, we extracted all instances of both alternants (i.\,e., the alternant with case identity and the genitive alternant, as illustrated in (\ref{ex:intro:alternation}) above) from both the DECOW16 web corpus and DeReKo\footnote{Again, we used the subset of \cite{Bubenhofer-ea2014}}.
+ As in the case study on prepositions, we then discarded all but one instance per document in order to avoid correlated data points at the document level.
+ This procedure yielded a total of 7906 data points, instantiated by 31 distinct measure nouns and 56 distinct kind-denoting nouns. Table~\ref{mn-dataset-summary} gives the distribution of construction type by corpus.
+ The proportion of the genitive alternant in DECOW16B is considerably lower than in DeReKo.
+ Given the plausible assumption that the two corpora differ markedly with respect to the mixture of registers contained in them (with DeReKo leaning more towards the kind of formal, well-redacted language typical of newspaper articles), the observed distribution of alternants lends further support to the idea that the alternation is, at least to some degree, influenced by register and/or style.
+
 
 \begin{table}
   \begin{tabular}{lll}
@@ -16,7 +22,10 @@ For this case study, we selected all combinations of measure nouns and kind-deno
 \end{table}
 
 
-Again, we model the contribution of different kinds of document-level information to explaining the variation phenomenon. As before, we specify a model using the seven document scores obtained from the factor analysis as predictors, and in a separate model, we directly use the 60 document-level counts obtained from COReX. In addition, we specify a third model in which another 53 predictor variables are added to the 7 predictors of the FA-based model. These additional predictors contain normally distributed random data and allow for a fair comparison with the COReX-based model (which otherwise could show better model fit merely because of accidental correlations between COReX features and the outcome.  Table~\ref{mn-results} shows the comparison of model fit.
+Again, we model the probability of a particular alternative (the genitive alternant, in this case) given different kinds of document-level information.
+As before, we specify a model using the seven document scores obtained from the factor analysis as predictors, and in a separate model, we directly use the 60 document-level counts obtained from COReX.
+In addition, we specify a third model in which another 53 predictor variables are added to the 7 predictors of the FA-based model.
+Table~\ref{mn-results} shows the comparison of model fit.
 
  
 \begin{equation}
