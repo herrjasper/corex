@@ -228,7 +228,6 @@ table(factor(subset(prep.allnew.md.sample.scaled.docscores.prepselection, target
 
 # plot coefficient estimates from individual models:
 
-
 # get a matrix of all coefficient estimates with associated p-value of < .05, and between 5 and -5: 
 coeffs <- do_glms_coeffs(prep.allnew.md.sample.scaled.docscores.prepselection, paste("nscase", " ~ ", paste(corex.predictors, collapse = " + ")))
 # remove the intercept:

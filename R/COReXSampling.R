@@ -13,11 +13,11 @@ colnames <- c("id", "ttrat", "wlen",
              "indef", "neper", "neloc", "neorg", "emo",
              "dq", "clitindef", "vpast", "vpres",
              "vpressubj", "wpastsubj", "vvpastsubj",
-             "pper_1st", "pper_2nd", "pper_3rd", "gen",
+             "pper_1st", "pper_2nd", "pper_3rd", 
              "simpx", "psimpx", "rsimpx", "v2", "vlast",
              "vflen", "esvf", "clausevf", "cmpnd", "unkn",
              "short", "qsvoc", "cnloan", "vvieren",
-             "sapos", "pass", "perf", "plu")  
+             "sapos", "pass", "perf", "plu", "forum")  
 
 
 
@@ -145,8 +145,9 @@ corpussample_naked <- function(chunk, connectiondetails, tablename="uk_corex_min
   mydb = dbConnect(MySQL(), user=user, password=password, dbname=dbname, host=host)
   
   docs <- paste("(", paste(chunk, collapse = ", "), ")")
+#  docs <- paste("(", paste(chunk$`1`, collapse = ", "), ")")
   querytext = paste("select", paste(colnames, collapse = ", "), " from ", tablename, " where ", selectby, " in ", docs)
-  cat(querytext,"\n")
+#  cat(querytext,"\n")
   rs <- dbSendQuery(mydb, querytext)
   df <- dbFetch(rs, n=-1)
   dbDisconnect(mydb)
@@ -168,7 +169,9 @@ getconnection <- function(connectiondetails){
 parallel_from_dereko <- function(chunks, selectby){
   system.time({df <- mclapply(chunks, corpussample_naked, mc.cores = 7, connectiondetails_dereko, tablename="uk_corex_min100", selectby=selectby)
   df <- ldply(df, data.frame)
-  df <- df[2:length(df)]})
+  df <- df[2:length(df)]
+  }
+  )
   cat("Data frame from dereko has", nrow(df), "rows,", ncol(df), "columns.\n")
   return(df)
 }

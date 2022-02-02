@@ -9,6 +9,7 @@ library("RColorBrewer")
 library(plyr)
 library(DAMisc)
 
+setwd("/Users/felix/Documents/Papers/corex/R")
 stratpreps <- read.csv2("/Users/felix/Documents/Papers/corex/casestudies/prepositions/combined.concordance.varyingpreps.4000.csv", header=FALSE, sep="\t", col.names = c("corpus", "id", "sidx", "case", "forum", "match", "target.prep", "next.pos", "next.lemma"))
 stratpreps$id <- as.character(stratpreps$id)
 stratpreps$forum <- as.factor(stratpreps$forum)
@@ -173,48 +174,52 @@ legend("topleft", legend=c("GLM with COReX predictors", "GLM with FA predictors"
 # plot coefficient estimates from individual models:
 
 # get a matrix of all coefficient estimates with associated p-value of < .05, and between 5 and -5: 
-coeffs <- do_glms_coeffs(stratpreps.md.scores, paste("nscase", " ~ ", paste(corex.predictors, collapse = " + ")), threshold = 0.001)
+coeffs <- do_glms_coeffs(stratpreps.md.scores, paste("nscase", " ~ ", paste(corex.predictors, collapse = " + ")), threshold = 0.05)
 # remove the intercept:
 coeffs<-coeffs[2:nrow(coeffs),]
-coeffs <- coeffs[fac5.predictors,]
+coeffs.fac1 <- coeffs[fac1.predictors,]
+coeffs.fac5 <- coeffs[fac5.predictors,]
+coeffs.fac7 <- coeffs[fac7.predictors,]
+coeffs.fac7
 
+currentcoeffs <- coeffs.fac7
 
 # get maximum and minimum coefficient 
-x.lower <- min(coeffs[!is.na(coeffs)]) * 1.05
-x.upper <- max(coeffs[!is.na(coeffs)]) * 1.05
-
-
-
-dotchart(rep(-100, length(rownames(coeffs))),
-         xlim = c(x.lower, x.upper),
-         ylim = c(0,12),
-         lcolor = "gray", 
-         cex.lab = .3,
-         labels = rownames(coeffs),
-         cex = .8,
-         main = "GLM coefficient estimates for selected COReX features, by preposition",
-         sub = "Features associated with Factor 5"
-)
-
-lines(c(0,0), c(0,nrow(coeffs)+1), col="gray", lty=1)
+x.lower <- min(currentcoeffs[!is.na(currentcoeffs)]) * 1.05
+x.upper <- max(currentcoeffs[!is.na(currentcoeffs)]) * 1.05
 
 
 llty <- 1
 lpch <- 20
 lcex <- 1.3 # 0.75
 llwd <- 2
-#plotcolors <- c(brewer.pal(7,"Set1"), "khaki", "olivedrab1", "purple3")
 plotcolors <- c(brewer.pal(8,"Dark2"), brewer.pal(11, "RdYlGn")[1], brewer.pal(9,"YlOrRd")[6])
 pchsymbols <- c(0:4,6:8,11,12)
 
-for (i in 1:nrow(coeffs)) {
+
+dotchart(rep(-100, length(rownames(currentcoeffs))),
+         xlim = c(x.lower, x.upper),
+         ylim = c(0,12),
+         lcolor = "gray", 
+         cex.lab = .3,
+         labels = rownames(currentcoeffs),
+         cex = .8,
+         main = "GLM coefficient estimates for selected COReX features, by preposition",
+         sub = "Features associated with Factor 7"
+)
+
+lines(c(0,0), c(0,nrow(currentcoeffs)+1), col="gray", lty=1)
+
+
+
+for (i in 1:nrow(currentcoeffs)) {
   #  cat("---------", rownames(coeffs)[i], "--------------\n")
-  for (j in 1:ncol(coeffs)){
+  for (j in 1:ncol(currentcoeffs)){
     #cat(colnames(coeffs)[j],"\t")
     color <- plotcolors[j]
     #cat(color, "\n")
     #points(coeffs[i,j], i, col = color, pch = lpch, cex = lcex)
-    points(coeffs[i,j], i, col = plotcolors[j], pch = pchsymbols[j], cex = lcex, lwd=llwd)
+    points(currentcoeffs[i,j], i+ runif(1,min = -.2, max = .2), col = plotcolors[j], pch = pchsymbols[j], cex = lcex, lwd=llwd)
   }
 }
 #legend(-0.65, 58, legend=colnames(coeffs), cex = .7, fill=plotcolors, ncol=2)
@@ -223,9 +228,11 @@ for (i in 1:nrow(coeffs)) {
 #legend(-0.65, 15, legend=colnames(coeffs), cex = .7, pch=pchsymbols, ncol=2)
 
 # fac 5:
-#legend(-0.6, nrow(coeffs)+.7, legend=colnames(coeffs), cex = .7, pch=pchsymbols, ncol=2)
+#legend("topleft", legend=colnames(coeffs), cex = .7, pch=pchsymbols, col=plotcolors, ncol=1)
 # fac 1:
-legend("topleft", legend=colnames(coeffs), cex = .7, pch=pchsymbols, ncol=2, text.width=.1)
+#legend("bottomleft", legend=colnames(coeffs), cex = .8, pch=pchsymbols, col=plotcolors, ncol=1, text.width=.1)
+# fac 7:
+legend("bottomleft", legend=colnames(coeffs), cex = .8, pch=pchsymbols, col=plotcolors, ncol=1, text.width=.1)
 
 #########################################
 
@@ -244,4 +251,4 @@ fac7.predictors <- rownames(filtered.fa.loadings[(filtered.fa.loadings[,'PA7'] !
 do_glms_open(stratpreps.md.scores, "nscase ~ next.pos")
 
 
-
+filtered.fa.loadings.new

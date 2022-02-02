@@ -14,7 +14,7 @@ replacement = FALSE
 
 # set column names:
 
-colnames <- c("textsigle", "id", "ttrat", "wlen", 
+colnames <- c("id", "ttrat", "wlen", 
               "slen", "modal", "vv", "vaux", 
               "vfin", "cn", "prep", "inf", "imp", "adv",
               "adj", "subjs", "subji", "conj", "wh",
@@ -27,7 +27,7 @@ colnames <- c("textsigle", "id", "ttrat", "wlen",
               "simpx", "psimpx", "rsimpx", "v2", "vlast",
               "vflen", "esvf", "clausevf", "cmpnd", "unkn",
               "short", "qsvoc", "cnloan", "vvieren",
-              "sapos", "pass", "perf", "plu")  
+              "sapos", "pass", "perf", "plu", "forum")  
 
 # parallel setup:
 no_cores <- detectCores() - 1
@@ -259,22 +259,18 @@ fa.diagram(fa.n7.pa.promax.renamed, cut = 0.3)
 # - or there is a greater value for that feature on another factor.
 
 filtered.fa.loadings <- filter_loadings(fa.n7.pa.promax, threshold = 0.35)
-# after fixing the filter_loadings function:
-filtered.fa.loadings.new <- filter_loadings_new(fa.n7.pa.promax, threshold = 0.35)
 
 # calculate the actual document scores according to the filtered factor loadings:
 # make a matrix with a column for the doc-ID and one column for each factor from the fa:
 
 document.scores <- docscores_biber(random.subcorp, c(2:43,45:62), filtered.fa.loadings)
 # after fixing the filter_loadings function:
-document.scores.new <- docscores_biber(random.subcorp, c(2:43,45:62), filtered.fa.loadings.new)
-colnames(document.scores.new) <- c("id", "PA2.new", "PA1.new", "PA5.new", "PA4.new", "PA7.new", "PA6.new", "PA3.new")
 
 
 # merge document scores with original corpus df:
 random.subcorp.with.scores <- merge(x = random.subcorp, y = document.scores, by = "id", all.x = TRUE)
 # merge corrected document scores:
-random.subcorp.with.scores.forum.meta <- merge(x = random.subcorp.with.scores.forum.meta, y = document.scores.new, by = "id", all.x = TRUE)
+random.subcorp.with.scores.forum.meta <- merge(x = random.subcorp.with.scores.forum.meta, y = document.scores, by = "id", all.x = TRUE)
 
 
 hist(random.subcorp.with.scores$PA2,breaks=100)
